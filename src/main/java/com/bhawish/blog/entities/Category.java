@@ -3,7 +3,6 @@ package com.bhawish.blog.entities;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.el.parser.AstFalse;
 import org.hibernate.annotations.Collate;
 
 import jakarta.persistence.CascadeType;
@@ -15,29 +14,30 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotEmpty;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "users")
+@Table(name = "categories")
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
-public class User {
+public class Category {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private int id;
-	
-	@Column(name = "user_name", nullable = false , length = 100)
-	private String name;
-	private String email;
-	private String password;
-	private String about;
-	
-	@OneToMany(mappedBy = "user",fetch = FetchType.LAZY , cascade = CascadeType.ALL)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer categoryId;
+	@Column(name = "title ", nullable = false ,length = 100)
+	private String categoryTitle;
+	@Column(name = "descrription")
+	private String categoryDescription;
+	@OneToMany(mappedBy = "category",fetch = FetchType.LAZY , cascade = CascadeType.ALL)
 	private List<Post> posts = new ArrayList<>();
+	
+	
+	
 	
 
 }
