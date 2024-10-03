@@ -1,6 +1,7 @@
 package com.bhawish.blog.payload;
 
 import java.util.Date;
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,6 +22,8 @@ public class PostDto {
 	private Date addedDate;
 	private UserDto user;
 	private CategoryDto category;
+	private List<CommentDto> comments;
+	
 	
 	
 

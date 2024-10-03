@@ -1,6 +1,8 @@
 package com.bhawish.blog.payload;
 
 
+import java.util.List;
+
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
@@ -24,6 +26,8 @@ public class UserDto {
 	@Size(min=3,max=10,message = "Password Length Must Be 3 to 10 character")
 	private String password;
 	private String about;
+	
+	private List<CommentDto> comments;
 
 
 }

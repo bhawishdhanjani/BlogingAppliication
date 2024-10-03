@@ -6,11 +6,15 @@ import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.bhawish.blog.config.AppConstants;
+import com.bhawish.blog.entities.Role;
 import com.bhawish.blog.entities.User;
 import com.bhawish.blog.exceptions.ResourceNotFoundException;
 import com.bhawish.blog.payload.UserDto;
+import com.bhawish.blog.repositories.RoleRepo;
 import com.bhawish.blog.repositories.UserRepo;
 import com.bhawish.blog.services.UserService;
 
@@ -19,10 +23,16 @@ import com.bhawish.blog.services.UserService;
 public class UserServiceImpl implements UserService{
 	
 	@Autowired
-	UserRepo userRepo;
+	private UserRepo userRepo;
 	@Autowired
-	ModelMapper mapper;
-
+	private ModelMapper mapper;
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+	@Autowired
+	private RoleRepo roleRepo;
+	
+	
+	
 	@Override
 	public UserDto createUser(UserDto userDto) {
 		User user = dtoToUser(userDto);
@@ -69,6 +79,22 @@ public class UserServiceImpl implements UserService{
 		return this.mapper.map(user, UserDto.class);
 		
 		
+	}
+
+	@Override
+	public UserDto registerNewUser(UserDto userDto) {
+		User user = dtoToUser(userDto);
+		user.setPassword(passwordEncoder.encode(user.getPassword()));
+		Role role = roleRepo.findById(AppConstants.NORMAL_USER).get();
+		user.getRoles().add(role);
+		User savedUser = userRepo.save(user);
+		return userToDto(savedUser);
+	}
+
+	@Override
+	public UserDto getCurrentUser(String name) {
+		User user = userRepo.findByEmail(name).get();
+		return userToDto(user);
 	}
 	
 
